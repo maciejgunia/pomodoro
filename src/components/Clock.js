@@ -2,12 +2,18 @@ import React, { Component } from 'react';
 import './Clock.sass';
 
 class Clock extends Component {
-    
+    workSeconds = this.props.work*60;
+    breakSeconds = this.props.break*60;
+
     constructor (props) {
         super(props);
         this.state = {
-            seconds: props.timer*60,
-            timerActive : false
+            seconds: this.workSeconds,
+            maxSeconds: this.workSeconds,
+            timerActive: false,
+            currentCycle : 'work',
+            strokeMax: props.radius*2*Math.PI,
+            strokeMin: 0
         }
 
         this.startStopTimer = this.startStopTimer.bind(this);
@@ -32,14 +38,43 @@ class Clock extends Component {
 
     countDown () {
         this.setState({
-            seconds: this.state.seconds - 1
+            seconds: this.state.seconds - 1,
+            strokeMin: ((this.state.maxSeconds - this.state.seconds + 1)/this.state.maxSeconds) * this.state.strokeMax
         });
+
+        if (this.state.seconds === 0)
+            if(this.state.currentCycle === 'work') {
+                this.setState({
+                    seconds: this.breakSeconds,
+                    maxSeconds: this.breakSeconds,
+                    currentCycle: 'break'
+                });  
+            } else if (this.state.currentCycle === 'break'){
+                this.setState({
+                    seconds: this.workSeconds,
+                    maxSeconds: this.workSeconds,
+                    currentCycle: 'work'
+                });    
+            }
     }
     
     render() {
         return (
-            <div className="clock" onClick={this.startStopTimer}>
-                {this.sencondsToTime(this.state.seconds)}
+            <div className="clock-container">
+            <svg 
+            className="clock" 
+            onClick={this.startStopTimer}
+            width={this.props.size}
+            height={this.props.size}>
+                <circle 
+                className="clock-face" 
+                r={this.props.radius} 
+                cx={this.props.size/2} 
+                cy={this.props.size/2}
+                stroke-width={this.props.radius/4}
+                stroke-dasharray={this.state.strokeMin + ' ' + this.state.strokeMax}/>
+            </svg>
+            {this.sencondsToTime(this.state.seconds)}
             </div>
         );
     }
