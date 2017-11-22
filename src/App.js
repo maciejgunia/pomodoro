@@ -6,7 +6,7 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <Clock work="0.1" break="0.1" radius="80" size="200"/>
+        <Clock work="0.1" break="0.1" size="200"/>
       </div>
     );
   }

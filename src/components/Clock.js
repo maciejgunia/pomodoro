@@ -11,9 +11,10 @@ class Clock extends Component {
             seconds: this.workSeconds,
             maxSeconds: this.workSeconds,
             timerActive: false,
-            currentCycle : 'work',
-            strokeMax: props.radius*2*Math.PI,
-            strokeMin: 0
+            currentCycleIsWork : true,
+            strokeMax: props.size*Math.PI,
+            strokeMin: 0,
+            strokeColor: 'green'
         }
 
         this.startStopTimer = this.startStopTimer.bind(this);
@@ -42,18 +43,22 @@ class Clock extends Component {
             strokeMin: ((this.state.maxSeconds - this.state.seconds + 1)/this.state.maxSeconds) * this.state.strokeMax
         });
 
-        if (this.state.seconds === 0)
-            if(this.state.currentCycle === 'work') {
+        if (this.state.seconds < 0)
+            if(this.state.currentCycleIsWork) {
                 this.setState({
                     seconds: this.breakSeconds,
                     maxSeconds: this.breakSeconds,
-                    currentCycle: 'break'
+                    currentCycleIsWork: false,
+                    strokeMin: 0,
+                    strokeColor: 'red'
                 });  
-            } else if (this.state.currentCycle === 'break'){
+            } else {
                 this.setState({
                     seconds: this.workSeconds,
                     maxSeconds: this.workSeconds,
-                    currentCycle: 'work'
+                    currentCycleIsWork: true,
+                    strokeMin: 0,
+                    strokeColor: 'green'
                 });    
             }
     }
@@ -68,11 +73,12 @@ class Clock extends Component {
             height={this.props.size}>
                 <circle 
                 className="clock-face" 
-                r={this.props.radius} 
+                r={this.props.size/2} 
                 cx={this.props.size/2} 
                 cy={this.props.size/2}
-                stroke-width={this.props.radius/4}
-                stroke-dasharray={this.state.strokeMin + ' ' + this.state.strokeMax}/>
+                stroke={this.state.strokeColor}
+                strokeWidth={this.props.size/8}
+                strokeDasharray={this.state.strokeMin + ' ' + this.state.strokeMax}/>
             </svg>
             {this.sencondsToTime(this.state.seconds)}
             </div>
