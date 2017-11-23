@@ -66,26 +66,24 @@ class Clock extends Component {
     render() {
         return (
             <div className="clock-container">
-            <svg 
-            className="clock" 
-            onClick={this.startStopTimer}
-            width={this.props.size}
-            height={this.props.size}>
-                <circle 
-                className="clock-face" 
-                r={this.props.size/2} 
-                cx={this.props.size/2} 
-                cy={this.props.size/2}
-                stroke={this.state.strokeColor}
-                strokeWidth={this.props.size/8}
-                strokeDasharray={this.state.strokeMin + ' ' + this.state.strokeMax}/>
-            </svg>
-            {this.sencondsToTime(this.state.seconds)}
+                <svg 
+                className="clock" 
+                onClick={this.startStopTimer}
+                width={this.props.size}
+                height={this.props.size}>
+                    <circle 
+                    className="clock-face" 
+                    r={this.props.size/2} 
+                    cx={this.props.size/2} 
+                    cy={this.props.size/2}
+                    stroke={this.state.strokeColor}
+                    strokeWidth={this.props.size/8}
+                    strokeDasharray={this.state.strokeMin + ' ' + this.state.strokeMax}/>
+                </svg>
+                {this.sencondsToTime(this.state.seconds)}
             </div>
         );
     }
 }
-
-console.log('yoyo');
 
 export default Clock;
