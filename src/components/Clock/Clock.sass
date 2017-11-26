@@ -1,9 +1,26 @@
-.clock
-    transform: rotate(-90deg)
-    background: #000000
-    border-radius: 50%
-    cursor: pointer
-    border: 10px solid transparent
-    .clock-face
-        fill: none
-        transition: 1000ms linear
+.clock-container
+    position: relative
+    display: inline-block
+    .clock
+        transform: rotate(-90deg)
+        border-radius: 50%
+        cursor: pointer
+        .clock-face
+            fill: none
+            transition: 1000ms linear
+            &[timerType='work']
+                stroke: #8CBEB2
+                fill: darken(#8CBEB2, 15%)
+            &[timerType='break']
+                stroke: #F06060
+                fill: darken(#F06060, 15%)
+    .clock-output
+        color: #F2EBBF
+        top: 50%
+        left: 50%
+        position: absolute
+        font-size: 2em
+        transform: translate(-50%, -50%)
+        pointer-events: none
+        &::selection
+            background: inherit

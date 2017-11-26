@@ -3,7 +3,7 @@ import './Clock.sass';
 
 class Clock extends Component {
     workSeconds = this.props.work*60;
-    breakSeconds = this.props.break*60;
+    breakSeconds = this.props.break*60
 
     constructor (props) {
         super(props);
@@ -14,17 +14,37 @@ class Clock extends Component {
             currentCycleIsWork : true,
             strokeMax: props.size*Math.PI,
             strokeMin: 0,
-            strokeColor: 'green'
+            timerType: 'work'
+        }
+    }
+
+    componentWillReceiveProps(newProps) {
+        if(this.props.work !== newProps.work){
+            this.workSeconds = newProps.work*60;
+
+            if(this.state.currentCycleIsWork)
+                this.setState({
+                    seconds: this.workSeconds,
+                    maxSeconds: this.workSeconds
+                });
         }
 
-        this.startStopTimer = this.startStopTimer.bind(this);
+        if(this.props.break !== newProps.break){
+            this.breakSeconds = newProps.break*60;
+
+            if(!this.state.currentCycleIsWork)
+                this.setState({
+                    seconds: this.breakSeconds,
+                    maxSeconds: this.breakSeconds
+                });
+        }
     }
 
-    sencondsToTime (seconds) {
-        return new Date(1000 * seconds).toISOString().substr(11, 8);
+    secondsToTime (seconds) {
+        return new Date(1000 * seconds).toISOString().substr(14, 5);
     }
 
-    startStopTimer (e) {
+    startStopTimer = (e) => {
         e.preventDefault();
         if (this.state.timerActive) {
             clearInterval(this.timer);
@@ -50,7 +70,7 @@ class Clock extends Component {
                     maxSeconds: this.breakSeconds,
                     currentCycleIsWork: false,
                     strokeMin: 0,
-                    strokeColor: 'red'
+                    timerType: 'break'
                 });  
             } else {
                 this.setState({
@@ -58,7 +78,7 @@ class Clock extends Component {
                     maxSeconds: this.workSeconds,
                     currentCycleIsWork: true,
                     strokeMin: 0,
-                    strokeColor: 'green'
+                    timerType: 'work'
                 });    
             }
     }
@@ -72,7 +92,8 @@ class Clock extends Component {
                 width={this.props.size}
                 height={this.props.size}>
                     <circle 
-                    className="clock-face" 
+                    className="clock-face"
+                    timerType={this.state.timerType}
                     r={this.props.size/2} 
                     cx={this.props.size/2} 
                     cy={this.props.size/2}
@@ -80,7 +101,7 @@ class Clock extends Component {
                     strokeWidth={this.props.size/8}
                     strokeDasharray={this.state.strokeMin + ' ' + this.state.strokeMax}/>
                 </svg>
-                {this.sencondsToTime(this.state.seconds)}
+                <div className="clock-output">{this.secondsToTime(this.state.seconds)}</div>
             </div>
         );
     }

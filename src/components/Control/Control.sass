@@ -1,8 +1,29 @@
-.control-field
-    transform: rotate(-90deg)
-    background: #000000
-    border-radius: 50%
-    cursor: pointer
-    border: 10px solid transparent
+.control-container
+    display: inline-block
+    position: relative
+    vertical-align: top;
+    .control-field
+        transform: rotate(-90deg)
+        background: #000000
+        border-radius: 50%
+        cursor: pointer
+        &#control-field-work
+            background: darken(#8CBEB2, 15%)
+            .control-display
+                stroke: #8CBEB2
+        &#control-field-break
+            background: darken(#F06060, 15%)
+            .control-display
+                stroke: #F06060
     .control-display
-        fill: none
+        fill: transparent
+    .control-output
+        color: #F2EBBF
+        top: 50%
+        left: 50%
+        position: absolute
+        font-size: 2em
+        transform: translate(-50%, -50%)
+        pointer-events: none
+        &::selection
+            background: inherit
