@@ -4,6 +4,7 @@ import './Control.sass';
 class Control extends Component {
     movement = 0;
     controlId = 'control-field-' + this.props.type;
+    currentMousePosition = [0,0];
 
     constructor(props) {
         super(props);
@@ -20,12 +21,20 @@ class Control extends Component {
         document.getElementById(this.controlId).addEventListener('mousedown', this.startDragging);
         document.addEventListener('mouseup', this.stopDragging);
         document.addEventListener('mousemove', this.handleMousemove);
+        
+        document.getElementById(this.controlId).addEventListener('touchstart', this.startDragging);
+        document.addEventListener('touchend', this.stopDragging);
+        document.addEventListener('touchmove', this.handleMousemove);
     }
 
     startDragging = (event) => {
+        event.preventDefault();
+
+        event.type === 'mousedown' ? this.currentMousePosition = [event.clientX, event.clientY] : this.currentMousePosition = [event.touches[0].clientX, event.touches[0].clientY];
+
         this.setState({
             isDragging: true,
-            previousMousePosition: [event.clientX, event.clientY]
+            previousMousePosition: this.currentMousePosition
         });
     }
 
@@ -40,23 +49,25 @@ class Control extends Component {
 
     handleMousemove = (event) => {
         if(this.state.isDragging) {
-            if(Math.abs(event.clientX - this.state.previousMousePosition[0]) > Math.abs(this.state.previousMousePosition[1] - event.clientY)) {
-                this.movement = event.clientX - this.state.previousMousePosition[0];
+            event.type === 'mousemove' ? this.currentMousePosition = [event.clientX, event.clientY] : this.currentMousePosition = [event.touches[0].clientX, event.touches[0].clientY];
+
+            if(Math.abs(this.currentMousePosition[0] - this.state.previousMousePosition[0]) > Math.abs(this.state.previousMousePosition[1] - this.currentMousePosition[1])) {
+                this.movement = this.currentMousePosition[0] - this.state.previousMousePosition[0];
             } else {
-                this.movement = this.state.previousMousePosition[1] - event.clientY;
+                this.movement = this.state.previousMousePosition[1] - this.currentMousePosition[1];
             }
 
             if(this.movement > 0) {
                 this.setState({
                     number: Math.floor((this.state.strokeMin / this.state.strokeMax)*this.props.controlMax),
                     strokeMin: Math.min(this.state.strokeMin + this.movement, this.state.strokeMax),
-                    previousMousePosition: [event.clientX, event.clientY]
+                    previousMousePosition: this.currentMousePosition
                 });
             } else {
                 this.setState({
                     number: Math.floor((this.state.strokeMin / this.state.strokeMax)*this.props.controlMax),
                     strokeMin: Math.max(this.state.strokeMin + this.movement, this.state.strokeMax/this.props.controlMax),
-                    previousMousePosition: [event.clientX, event.clientY]
+                    previousMousePosition: this.currentMousePosition
                 });
             }
         }

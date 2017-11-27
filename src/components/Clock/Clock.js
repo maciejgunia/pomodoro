@@ -38,14 +38,33 @@ class Clock extends Component {
                     maxSeconds: this.breakSeconds
                 });
         }
+
+        if(newProps.reset){
+            this.setState({
+                seconds: this.workSeconds,
+                maxSeconds: this.workSeconds,
+                currentCycleIsWork : true,
+                strokeMax: this.props.size*Math.PI,
+                strokeMin: 0,
+                timerType: 'work'
+            });
+
+            if(this.state.timerActive){
+                this.startStopTimer();
+            }
+
+            this.props.resetclock();
+        }
     }
 
     secondsToTime (seconds) {
-        return new Date(1000 * seconds).toISOString().substr(14, 5);
+        if(seconds > 3599)
+            return new Date(1000 * seconds).toISOString().substr(11, 8);
+        else
+            return new Date(1000 * seconds).toISOString().substr(14, 5);
     }
 
-    startStopTimer = (e) => {
-        e.preventDefault();
+    startStopTimer = () => {
         if (this.state.timerActive) {
             clearInterval(this.timer);
         } else {
@@ -93,7 +112,7 @@ class Clock extends Component {
                 height={this.props.size}>
                     <circle 
                     className="clock-face"
-                    timerType={this.state.timerType}
+                    timertype={this.state.timerType}
                     r={this.props.size/2} 
                     cx={this.props.size/2} 
                     cy={this.props.size/2}

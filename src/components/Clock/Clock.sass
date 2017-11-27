@@ -1,6 +1,8 @@
 .clock-container
     position: relative
     display: inline-block
+    align-self: center
+    margin: 0 0 0 20px
     .clock
         transform: rotate(-90deg)
         border-radius: 50%
@@ -8,10 +10,10 @@
         .clock-face
             fill: none
             transition: 1000ms linear
-            &[timerType='work']
+            &[timertype='work']
                 stroke: #8CBEB2
                 fill: darken(#8CBEB2, 15%)
-            &[timerType='break']
+            &[timertype='break']
                 stroke: #F06060
                 fill: darken(#F06060, 15%)
     .clock-output
@@ -19,8 +21,8 @@
         top: 50%
         left: 50%
         position: absolute
-        font-size: 2em
+        font-size: 4em
         transform: translate(-50%, -50%)
         pointer-events: none
-        &::selection
-            background: inherit
+    @media (max-width:460px)
+        margin: 0
