@@ -82,7 +82,7 @@ class Clock extends Component {
             strokeMin: ((this.state.maxSeconds - this.state.seconds + 1)/this.state.maxSeconds) * this.state.strokeMax
         });
 
-        if (this.state.seconds < 0)
+        if (this.state.seconds < 0){
             if(this.state.currentCycleIsWork) {
                 this.setState({
                     seconds: this.breakSeconds,
@@ -100,6 +100,8 @@ class Clock extends Component {
                     timerType: 'work'
                 });    
             }
+            document.getElementsByClassName('alarm-sound')[0].play();
+        }
     }
     
     render() {
@@ -113,6 +115,7 @@ class Clock extends Component {
                     <circle 
                     className="clock-face"
                     timertype={this.state.timerType}
+                    timerstate={this.state.timerActive ? 'active' : ''}
                     r={this.props.size/2} 
                     cx={this.props.size/2} 
                     cy={this.props.size/2}
@@ -121,6 +124,9 @@ class Clock extends Component {
                     strokeDasharray={this.state.strokeMin + ' ' + this.state.strokeMax}/>
                 </svg>
                 <div className="clock-output">{this.secondsToTime(this.state.seconds)}</div>
+                <audio className="alarm-sound">
+                    <source src="front-desk-bells-daniel_simon.mp3" type="audio/mpeg"/>
+                </audio>
             </div>
         );
     }

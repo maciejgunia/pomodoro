@@ -9,13 +9,16 @@
         cursor: pointer
         .clock-face
             fill: none
-            transition: 1000ms linear
-            &[timertype='work']
-                stroke: #8CBEB2
-                fill: darken(#8CBEB2, 15%)
-            &[timertype='break']
-                stroke: #F06060
-                fill: darken(#F06060, 15%)
+            transition: all 1000ms linear
+            stroke: #666666
+            fill: #333333
+            &[timerstate='active']
+                &[timertype='work']
+                    stroke: #8CBEB2
+                    fill: darken(#8CBEB2, 15%)
+                &[timertype='break']
+                    stroke: #F06060
+                    fill: darken(#F06060, 15%)
     .clock-output
         color: #F2EBBF
         top: 50%

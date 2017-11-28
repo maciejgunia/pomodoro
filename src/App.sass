@@ -2,11 +2,36 @@ body
     background: #222222
     font-family: 'Oxygen', sans-serif
     font-weight: 300
-    h1
-        color: #444444
+    .tutorial-wrapper
+        position: relative
+        height: 100vh
+        width: 100%
+        background: rgba(0,0,0,0.8)
+        &[tutorialvisible="false"]
+            display: none
+    .tutorial
+        position: absolute
+        top: 50%
+        left: 50%
+        width: 100%
+        max-width: 620px
+        transform: translate(-50%, -50%)
+        color: #F2EBBF
+        line-height: 1.5
+        padding: 2em
+        box-sizing: border-box
+        font-size: 0.8em
         text-align: center
-        font-size: 2em
-        padding: 1em 0
+        h1
+            font-size: 2em
+            margin-bottom: 0.5em
+        h2
+            font-size: 1.3em
+            margin-bottom: 1em
+        p
+            margin-bottom: 0.3em
+        a
+            color: #F2EBBF
     .App
         position: absolute
         top: 50%
@@ -29,13 +54,8 @@ body
             &:focus
                 outline: none
     @media (max-width:460px)
-        h1
-            font-size: 1.3em
         .App
-            position: static
-            transform: none
             width: 320px
-            margin: 0 auto
             grid-template-columns: 320px
             grid-template-rows: 120px auto
             .controls
